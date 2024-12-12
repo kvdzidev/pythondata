@@ -1,5 +1,3 @@
-# pythondata
-zad dodatkowe lab10:
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -23,6 +21,7 @@ class SiecAutoenkoder(nn.Module):
             nn.Conv2d(16, 32, 3, stride=2, padding=1),
             nn.ReLU()
         )
+        32->8/16 (dodac jeszcze jedna warstwe)
         self.dekoder = nn.Sequential(
             nn.ConvTranspose2d(32, 16, 3, stride=2, padding=1, output_padding=1),
             nn.ReLU(),
@@ -43,7 +42,7 @@ epoki = 10
 urzadzenie = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model.to(urzadzenie)
 
-for epoka in range(epoki):
+for epoch in range(epoki):
     model.train()
     suma_strat = 0
     for obrazy, _ in ladowarka_danych:
@@ -56,7 +55,7 @@ for epoka in range(epoki):
         suma_strat += strata.item()
     
     srednia_strata = suma_strat / len(ladowarka_danych)
-    print(f'Epoka [{epoka+1}/{epoki}], Strata: {srednia_strata:.4f}')
+    print(f'Epoka [{epoch+1}/{epoki}], Strata: {srednia_strata:.4f}')
 
 model.eval()
 iterator_danych = iter(ladowarka_danych)
